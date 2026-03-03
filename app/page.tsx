@@ -36,7 +36,7 @@ export default function Home() {
             <img src="/heart.jpeg" alt="والرحلة من هنا تبدأ" className="hero-img"/>
           </div>
           <p className="quote-float">
-            «أَلَا وَإِنَّ فِي الْجَسَدِ مُضْغَةً إِذَا صَلَحَتْ صَلَحَ الْجَسَدُ كُلُّهُ»
+            «ألا وإن في الجسد مضغة إذا صلحت صلح الجسد كله، وإذا فسدت فسد الجسد كله، ألا وهي القلب»
           </p>
         </div>
       </section>
