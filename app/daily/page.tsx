@@ -101,9 +101,11 @@ export default function DailyPage() {
       <nav className="nav">
         <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
         <ul className="nav-links">
-          <li><a href="/audio">المسموعات</a></li>
-          <li><a href="/daily">يومياتي</a></li>
           <li><a href="/#vision">رؤيتنا</a></li>
+          <li><a href="/audio">المسموعات</a></li>
+          <li><a href="/readings">المقروءات</a></li>
+          <li><a href="/daily">يومياتي</a></li>
+          <li><a href="/adhkar">أذكاري</a></li>
         </ul>
       </nav>
 

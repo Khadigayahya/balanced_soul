@@ -5,10 +5,10 @@ export default function Home() {
       <nav className="nav">
         <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
         <ul className="nav-links">
+          <li><a href="/#vision">رؤيتنا</a></li>
           <li><a href="/audio">المسموعات</a></li>
-          <li><a href="/daily">يومياتي</a></li>
-          <li><a href="#vision">رؤيتنا</a></li>
           <li><a href="/readings">المقروءات</a></li>
+          <li><a href="/daily">يومياتي</a></li>
           <li><a href="/adhkar">أذكاري</a></li>
         </ul>
       </nav>
@@ -50,13 +50,13 @@ export default function Home() {
         </div>
         <div className="features-grid">
           {[
-            { icon: "🎧", title: "المسموعات", desc: "سلاسل مختارة في فقه النفس، حسن التوكل، سِيَر القدوات، وفهم القرآن.", href: "/audio" },
-            { icon: "📖", title: "المقروءات", desc: "مقالات قصيرة وعملية، تجارب شخصية حقيقية، ومقتطفات مختارة.", href: "#" },
-            { icon: "📅", title: "يومياتي", desc: "خطط يومك، سجّل إنجازاتك، واحتفل بكل خطوة بتوازن.", href: "/daily" },
-            { icon: "🤲", title: "أدعيتي وأذكاري", desc: "أذكار الصباح والمساء وأدعية للمواقف المختلفة.", href: "#" },
-            { icon: "💬", title: "استشارة", desc: "مساحة آمنة للاستشارة بمنهج إسلامي أصيل.", href: "#" },
-            { icon: "🌟", title: "المجتمع", desc: "كوميونتي من أشخاص سويّين يسيرون في نفس الرحلة.", href: "#" },
-          ].map((item) => (
+  { icon: "🎧", title: "المسموعات", desc: "سلاسل مختارة في فقه النفس، حسن التوكل، سِيَر القدوات، وفهم القرآن.", href: "/audio" },
+  { icon: "📖", title: "المقروءات", desc: "مقالات قصيرة وعملية، تجارب شخصية حقيقية، ومقتطفات مختارة.", href: "/readings" },
+  { icon: "📅", title: "يومياتي", desc: "خطط يومك، سجّل إنجازاتك، واحتفل بكل خطوة بتوازن.", href: "/daily" },
+  { icon: "🤲", title: "أدعيتي وأذكاري", desc: "أذكار الصباح والمساء وأدعية للمواقف المختلفة.", href: "/adhkar" },
+  { icon: "💬", title: "استشارة", desc: "مساحة آمنة للاستشارة بمنهج إسلامي أصيل.", href: "#" },
+  { icon: "🌟", title: "المجتمع", desc: "كوميونتي من أشخاص سويّين يسيرون في نفس الرحلة.", href: "#" },
+].map((item) => (
             <a href={item.href} className="feature-card" key={item.title}>
               <span className="feature-icon">{item.icon}</span>
               <h3 className="feature-title">{item.title}</h3>
