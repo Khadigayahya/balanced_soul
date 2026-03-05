@@ -10,6 +10,7 @@ export default function Home() {
           <li><a href="/readings">المقروءات</a></li>
           <li><a href="/daily">يومياتي</a></li>
           <li><a href="/adhkar">أذكاري</a></li>
+          <li><a href="/consultation">استشارة</a></li>
         </ul>
       </nav>
 
@@ -18,10 +19,8 @@ export default function Home() {
         <div className="hero-text">
           <span className="hero-badge">✦ رحلة التزكية والاتزان</span>
           <h1 className="hero-title">
-            صحح<br/>
-            <span className="highlight">بوصلة</span><br/>
-            قلبك
-          </h1>
+  صحح <span className="highlight">بوصلة</span> قلبك
+</h1>
           <p className="hero-desc">
   حين تصلح البوصلة، تستقيم الرحلة — هنا مَنصّةٌ تُعينكَ على فهم نفسك، وتجديد صلتك بربك، والنهوض بحياتك من موضع قوةٍ وثبات، فالمؤمن القوي خيرٌ وأحبُّ إلى الله من المؤمن الضعيف.
 </p>
@@ -54,8 +53,7 @@ export default function Home() {
   { icon: "📖", title: "المقروءات", desc: "مقالات قصيرة وعملية، تجارب شخصية حقيقية، ومقتطفات مختارة.", href: "/readings" },
   { icon: "📅", title: "يومياتي", desc: "خطط يومك، سجّل إنجازاتك، واحتفل بكل خطوة بتوازن.", href: "/daily" },
   { icon: "🤲", title: "أدعيتي وأذكاري", desc: "أذكار الصباح والمساء وأدعية للمواقف المختلفة.", href: "/adhkar" },
-  { icon: "💬", title: "استشارة", desc: "مساحة آمنة للاستشارة بمنهج إسلامي أصيل.", href: "#" },
-  { icon: "🌟", title: "المجتمع", desc: "كوميونتي من أشخاص سويّين يسيرون في نفس الرحلة.", href: "#" },
+  { icon: "💬", title: "استشارة", desc: "مساحة آمنة للاستشارة بمنهج إسلامي أصيل.", href: "/consultation" },
 ].map((item) => (
             <a href={item.href} className="feature-card" key={item.title}>
               <span className="feature-icon">{item.icon}</span>

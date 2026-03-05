@@ -106,6 +106,7 @@ export default function DailyPage() {
           <li><a href="/readings">المقروءات</a></li>
           <li><a href="/daily">يومياتي</a></li>
           <li><a href="/adhkar">أذكاري</a></li>
+          <li><a href="/consultation">استشارة</a></li>
         </ul>
       </nav>
 
