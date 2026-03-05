@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 interface Message {
   role: "user" | "assistant";
   content: string;
+  image?: string;
 }
 
 const SUGGESTIONS = [
@@ -21,21 +22,34 @@ export default function ConsultationPage() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages]);
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const send = async (text?: string) => {
     const userText = text || input.trim();
-    if (!userText || loading) return;
+    if (!userText && !image || loading) return;
 
-    // إضافة رسالة المستخدم للشاشة
-    const newMessages: Message[] = [...messages, { role: "user", content: userText }];
+    const newMessages: Message[] = [
+      ...messages,
+      { role: "user", content: userText || "أرسلت صورة", image: image || undefined },
+    ];
     setMessages(newMessages);
     setInput("");
+    setImage(null);
     setLoading(true);
 
     try {
@@ -44,21 +58,10 @@ export default function ConsultationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "حدث خطأ ما");
-      }
-
-      // إضافة رد البوت
       setMessages([...newMessages, { role: "assistant", content: data.reply }]);
-    } catch (err: any) {
-      // إظهار رسالة الخطأ للمستخدم بشكل لطيف
-      setMessages([...newMessages, { 
-        role: "assistant", 
-        content: `⚠️ ${err.message || "عذراً، واجهت مشكلة في الاتصال. حاول مرة أخرى."}` 
-      }]);
+    } catch {
+      setMessages([...newMessages, { role: "assistant", content: "عذراً، حدث خطأ. حاول مرة أخرى." }]);
     } finally {
       setLoading(false);
     }
@@ -85,35 +88,52 @@ export default function ConsultationPage() {
           <p className="section-subtitle">شارك ما يشغل بالك — بمنهج إسلامي أصيل ودعم حقيقي.</p>
         </div>
 
-        {/* أظهر الاقتراحات فقط في بداية المحادثة */}
-        {messages.length === 1 && (
-          <div className="chat-suggestions">
-            {SUGGESTIONS.map(s => (
-              <button key={s} className="suggestion-btn" onClick={() => send(s)}>
-                {s}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="chat-suggestions">
+          {SUGGESTIONS.map(s => (
+            <button key={s} className="suggestion-btn" onClick={() => send(s)}>{s}</button>
+          ))}
+        </div>
 
         <div className="chat-messages">
           {messages.map((msg, i) => (
             <div key={i} className={`chat-bubble ${msg.role === "user" ? "bubble-user" : "bubble-bot"}`}>
               {msg.role === "assistant" && <span className="bubble-avatar">🤍</span>}
-              <p className="bubble-text" style={{ whiteSpace: "pre-line" }}>{msg.content}</p>
+              <div className="bubble-content">
+                {msg.image && (
+                  <img src={msg.image} alt="صورة مرسلة" className="bubble-image" />
+                )}
+                <p className="bubble-text">{msg.content}</p>
+              </div>
             </div>
           ))}
-          
           {loading && (
             <div className="chat-bubble bubble-bot">
               <span className="bubble-avatar">🤍</span>
-              <p className="bubble-text typing">يكتب الآن...</p>
+              <p className="bubble-text typing">...</p>
             </div>
           )}
           <div ref={bottomRef} />
         </div>
 
+        {/* IMAGE PREVIEW */}
+        {image && (
+          <div className="image-preview">
+            <img src={image} alt="preview" className="preview-img" />
+            <button className="remove-image" onClick={() => setImage(null)}>× إزالة</button>
+          </div>
+        )}
+
         <div className="chat-input-row">
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileRef}
+            style={{ display: "none" }}
+            onChange={handleImage}
+          />
+          <button className="image-upload-btn" onClick={() => fileRef.current?.click()}>
+            📎
+          </button>
           <input
             className="chat-input"
             placeholder="اكتب رسالتك هنا..."
@@ -122,8 +142,8 @@ export default function ConsultationPage() {
             onKeyDown={e => e.key === "Enter" && send()}
             disabled={loading}
           />
-          <button className="chat-send-btn" onClick={() => send()} disabled={loading || !input.trim()}>
-             {loading ? "..." : "إرسال ←"}
+          <button className="chat-send-btn" onClick={() => send()} disabled={loading}>
+            {loading ? "..." : "إرسال ←"}
           </button>
         </div>
 
