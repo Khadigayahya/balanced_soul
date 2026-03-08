@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AuthProvider from "./AuthProvider";
 
 export const metadata: Metadata = {
   title: "صحح بوصلة قلبك",
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
