@@ -35,21 +35,16 @@ export default function DailyPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) {
-        window.location.href = "/login";
-        return;
-      }
+      if (!session) return;
 
       const userId = session.user.id;
 
-      // جيب المهام
       const { data: tasksData } = await supabase
         .from("tasks")
         .select("*")
         .eq("user_id", userId);
       if (tasksData) setTasks(tasksData);
 
-      // جيب الإنجازات
       const { data: achievementsData } = await supabase
         .from("achievements")
         .select("*")
@@ -57,7 +52,6 @@ export default function DailyPage() {
         .order("id", { ascending: false });
       if (achievementsData) setAchievements(achievementsData);
 
-      // الأذكار من localStorage
       const savedAdhkar = localStorage.getItem("bawsala-adhkar");
       if (savedAdhkar) setAdhkarDone(JSON.parse(savedAdhkar));
     });
