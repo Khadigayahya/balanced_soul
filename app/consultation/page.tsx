@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface Message {
   role: "user" | "assistant";
@@ -24,6 +25,7 @@ export default function ConsultationPage() {
   const [input, setInput] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -31,12 +33,53 @@ export default function ConsultationPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // جيب المحادثات السابقة
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) return;
+      const uid = session.user.id;
+      setUserId(uid);
+
+      const { data } = await supabase
+        .from("conversations")
+        .select("*")
+        .eq("user_id", uid)
+        .order("created_at", { ascending: true });
+
+      if (data && data.length > 0) {
+        const loaded: Message[] = data.map((m: any) => ({
+          role: m.role as "user" | "assistant",
+          content: m.content,
+        }));
+        setMessages(loaded);
+      }
+    });
+  }, []);
+
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => setImage(reader.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const saveMessage = async (role: string, content: string) => {
+    if (!userId) return;
+    await supabase.from("conversations").insert({
+      user_id: userId,
+      role,
+      content,
+    });
+  };
+
+  const clearConversation = async () => {
+    if (!userId) return;
+    await supabase.from("conversations").delete().eq("user_id", userId);
+    setMessages([{
+      role: "assistant",
+      content: "السلام عليكم ورحمة الله 🤍\nأنا مساعدك في منصة صحح بوصلة قلبك — يمكنك مشاركتي ما يشغل بالك، وسأكون معك بإذن الله.",
+    }]);
   };
 
   const send = async (text?: string) => {
@@ -52,6 +95,8 @@ export default function ConsultationPage() {
     setImage(null);
     setLoading(true);
 
+    await saveMessage("user", userText || "أرسلت صورة");
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -59,7 +104,9 @@ export default function ConsultationPage() {
         body: JSON.stringify({ messages: newMessages }),
       });
       const data = await res.json();
-      setMessages([...newMessages, { role: "assistant", content: data.reply }]);
+      const reply = data.reply;
+      setMessages([...newMessages, { role: "assistant", content: reply }]);
+      await saveMessage("assistant", reply);
     } catch {
       setMessages([...newMessages, { role: "assistant", content: "عذراً، حدث خطأ. حاول مرة أخرى." }]);
     } finally {
@@ -115,7 +162,6 @@ export default function ConsultationPage() {
           <div ref={bottomRef} />
         </div>
 
-        {/* IMAGE PREVIEW */}
         {image && (
           <div className="image-preview">
             <img src={image} alt="preview" className="preview-img" />
@@ -147,9 +193,14 @@ export default function ConsultationPage() {
           </button>
         </div>
 
-        <p className="chat-disclaimer">
-          ⚠️ هذا المساعد لا يُغني عن استشارة متخصص في الحالات الصعبة.
-        </p>
+        <div className="chat-footer-row">
+          <p className="chat-disclaimer">
+            ⚠️ هذا المساعد لا يُغني عن استشارة متخصص في الحالات الصعبة.
+          </p>
+          <button className="clear-chat-btn" onClick={clearConversation}>
+            🗑️ مسح المحادثة
+          </button>
+        </div>
       </div>
 
       <footer className="footer">
