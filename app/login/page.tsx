@@ -38,7 +38,7 @@ export default function LoginPage() {
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
-      else window.location.href = "/daily";
+      else window.location.href = "/";
     }
 
     setLoading(false);

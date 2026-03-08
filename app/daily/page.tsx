@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface Task {
   id: number;
@@ -33,56 +34,83 @@ export default function DailyPage() {
   const [todayDhikr, setTodayDhikr] = useState(0);
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem("bawsala-tasks");
-    const savedAchievements = localStorage.getItem("bawsala-achievements");
-    const savedAdhkar = localStorage.getItem("bawsala-adhkar");
-    if (savedTasks) setTasks(JSON.parse(savedTasks));
-    if (savedAchievements) setAchievements(JSON.parse(savedAchievements));
-    if (savedAdhkar) setAdhkarDone(JSON.parse(savedAdhkar));
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) {
+        window.location.href = "/login";
+        return;
+      }
+
+      const userId = session.user.id;
+
+      // جيب المهام
+      const { data: tasksData } = await supabase
+        .from("tasks")
+        .select("*")
+        .eq("user_id", userId);
+      if (tasksData) setTasks(tasksData);
+
+      // جيب الإنجازات
+      const { data: achievementsData } = await supabase
+        .from("achievements")
+        .select("*")
+        .eq("user_id", userId)
+        .order("id", { ascending: false });
+      if (achievementsData) setAchievements(achievementsData);
+
+      // الأذكار من localStorage
+      const savedAdhkar = localStorage.getItem("bawsala-adhkar");
+      if (savedAdhkar) setAdhkarDone(JSON.parse(savedAdhkar));
+    });
   }, []);
 
-  const saveTasks = (updated: Task[]) => {
-    setTasks(updated);
-    localStorage.setItem("bawsala-tasks", JSON.stringify(updated));
+  const getUserId = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.user.id;
   };
 
-  const saveAchievements = (updated: Achievement[]) => {
-    setAchievements(updated);
-    localStorage.setItem("bawsala-achievements", JSON.stringify(updated));
+  const addTask = async () => {
+    if (!newTask.trim()) return;
+    const userId = await getUserId();
+    const { data } = await supabase
+      .from("tasks")
+      .insert({ user_id: userId, text: newTask, done: false, type: taskType })
+      .select()
+      .single();
+    if (data) setTasks([...tasks, data]);
+    setNewTask("");
+  };
+
+  const toggleTask = async (id: number) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    await supabase.from("tasks").update({ done: !task.done }).eq("id", id);
+    setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  };
+
+  const deleteTask = async (id: number) => {
+    await supabase.from("tasks").delete().eq("id", id);
+    setTasks(tasks.filter(t => t.id !== id));
+  };
+
+  const addAchievement = async () => {
+    if (!newAchievement.trim()) return;
+    const userId = await getUserId();
+    const date = new Date().toLocaleDateString("ar-EG");
+    const { data } = await supabase
+      .from("achievements")
+      .insert({ user_id: userId, text: newAchievement, date })
+      .select()
+      .single();
+    if (data) setAchievements([data, ...achievements]);
+    setNewAchievement("");
+    setCelebrate(true);
+    setTimeout(() => setCelebrate(false), 3000);
   };
 
   const saveAdhkar = (updated: boolean[]) => {
     setAdhkarDone(updated);
     localStorage.setItem("bawsala-adhkar", JSON.stringify(updated));
     setTodayDhikr(updated.filter(Boolean).length);
-  };
-
-  const addTask = () => {
-    if (!newTask.trim()) return;
-    const updated = [...tasks, { id: Date.now(), text: newTask, done: false, type: taskType }];
-    saveTasks(updated);
-    setNewTask("");
-  };
-
-  const toggleTask = (id: number) => {
-    const updated = tasks.map(t => t.id === id ? { ...t, done: !t.done } : t);
-    saveTasks(updated);
-  };
-
-  const deleteTask = (id: number) => {
-    saveTasks(tasks.filter(t => t.id !== id));
-  };
-
-  const addAchievement = () => {
-    if (!newAchievement.trim()) return;
-    const updated = [
-      { id: Date.now(), text: newAchievement, date: new Date().toLocaleDateString("ar-EG") },
-      ...achievements,
-    ];
-    saveAchievements(updated);
-    setNewAchievement("");
-    setCelebrate(true);
-    setTimeout(() => setCelebrate(false), 3000);
   };
 
   const toggleAdhkar = (i: number) => {
@@ -110,14 +138,12 @@ export default function DailyPage() {
         </ul>
       </nav>
 
-      {/* CELEBRATE */}
       {celebrate && (
         <div className="celebrate-banner">
           ✨ أحسنت! كل إنجاز يقربك من هدفك — بارك الله فيك ✨
         </div>
       )}
 
-      {/* HEADER */}
       <div className="daily-header">
         <span className="section-label">يومياتي</span>
         <h1 className="section-title">يومٌ جديد، فرصةٌ جديدة</h1>
@@ -128,7 +154,6 @@ export default function DailyPage() {
 
       <div className="daily-grid">
 
-        {/* PROGRESS */}
         <div className="daily-card progress-card">
           <h2 className="card-title">📊 تقدّم اليوم</h2>
           <div className="progress-stats">
@@ -151,7 +176,6 @@ export default function DailyPage() {
           <p className="progress-label">{progress}% من مهام اليوم</p>
         </div>
 
-        {/* TASKS */}
         <div className="daily-card tasks-card">
           <h2 className="card-title">📋 مهام اليوم</h2>
           <div className="task-input-row">
@@ -193,7 +217,6 @@ export default function DailyPage() {
           </ul>
         </div>
 
-        {/* ADHKAR */}
         <div className="daily-card adhkar-card">
           <h2 className="card-title">🤲 أذكار اليوم</h2>
           <ul className="adhkar-list">
@@ -211,7 +234,6 @@ export default function DailyPage() {
           <p className="adhkar-progress">{adhkarCount} / {ADHKAR.length} أذكار مكتملة</p>
         </div>
 
-        {/* ACHIEVEMENTS */}
         <div className="daily-card achievements-card">
           <h2 className="card-title">🌟 إنجازاتي</h2>
           <div className="achievement-input-row">
@@ -244,7 +266,6 @@ export default function DailyPage() {
 
       </div>
 
-      {/* HADITH */}
       <div className="hadith-section">
         <p className="hadith-text">«الْمُؤْمِنُ الْقَوِيُّ خَيْرٌ وَأَحَبُّ إِلَى اللَّهِ مِنَ الْمُؤْمِنِ الضَّعِيفِ»</p>
         <p className="hadith-source">صحيح مسلم</p>
