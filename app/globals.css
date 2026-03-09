@@ -1458,3 +1458,38 @@ section { padding: 6rem 5rem; }
   border-color: var(--red);
   color: var(--red);
 }
+.task-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.task-meta-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.task-date-input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(124,58,237,0.2);
+  border-radius: 8px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: white;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.task-dates {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
