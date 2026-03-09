@@ -111,14 +111,14 @@ const BOOKS: Book[] = [
     available: false,
   },
   {
-    id: 6,
-    title: "خواطر فتىً لم يرحل",
-    author: "",
-    description: "خواطر صادقة تلامس روح الشباب وتعيد توجيه البوصلة نحو الله.",
-    telegramUrl: "https://t.me/Balanced_Soul_123/3",
-    mantoqUrl: undefined,
-    available: true,
-  },
+  id: 6,
+  title: "خواطر فتىً لم يرحل",
+  author: "أحمد شقير",
+  description: "من قلب شاب لم تُطفئ الدنيا جذوته — أحمد شقير يكتب خواطره بصدق نادر، عن الإيمان والحب والهوية والتحديات، في كلمات تهزّ القلب وتُعيد توجيه البوصلة نحو الله.",
+  telegramUrl: "https://t.me/Balanced_Soul_123/3",
+  mantoqUrl: undefined,
+  available: true,
+   },
 ];
 
 const CATEGORIES: Category[] = ["الكل", "آيات وتدبر", "أحاديث", "مقتطفات", "تجارب", "مقالات"];
