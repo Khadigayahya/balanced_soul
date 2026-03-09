@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 type Category = "الكل" | "آيات وتدبر" | "أحاديث" | "مقتطفات" | "تجارب" | "مقالات";
 
@@ -10,6 +11,16 @@ interface Article {
   body: string;
   source?: string;
   readTime: string;
+}
+
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  description: string;
+  telegramUrl?: string;
+  mantoqUrl?: string;
+  available: boolean;
 }
 
 const ARTICLES: Article[] = [
@@ -61,13 +72,93 @@ const ARTICLES: Article[] = [
   },
 ];
 
+const BOOKS: Book[] = [
+  {
+    id: 1,
+    title: "القرآن الكريم",
+    author: "كلام الله تعالى",
+    description: "المصدر الأول والأصيل لتزكية النفس وطمأنينة القلب.",
+    telegramUrl: undefined,
+    mantoqUrl: undefined,
+    available: false,
+  },
+  {
+    id: 2,
+    title: "مدارج السالكين",
+    author: "ابن القيم الجوزية",
+    description: "رحلة في منازل القلب من التوبة إلى المحبة — من أعمق ما كُتب في تزكية النفس.",
+    available: false,
+  },
+  {
+    id: 3,
+    title: "الداء والدواء",
+    author: "ابن القيم الجوزية",
+    description: "علاج أمراض القلوب بمنهج نبوي أصيل — للنفس التي تبحث عن شفاء حقيقي.",
+    available: false,
+  },
+  {
+    id: 4,
+    title: "شمائل النبي وأخلاقه",
+    author: "الإمام الترمذي",
+    description: "تعرّف على النبي ﷺ من قريب — أخلاقه وهديه وبشريته التي تملأ القلب محبةً.",
+    available: false,
+  },
+  {
+    id: 5,
+    title: "نظرية الفستق",
+    author: "د. خالد المنيع",
+    description: "كتاب معاصر يتحدث عن التفكير الإيجابي والنمو الشخصي من منظور إسلامي.",
+    available: false,
+  },
+  {
+    id: 6,
+    title: "خواطر فتىً لم يرحل",
+    author: "",
+    description: "خواطر صادقة تلامس روح الشباب وتعيد توجيه البوصلة نحو الله.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/3",
+    mantoqUrl: undefined,
+    available: true,
+  },
+];
+
 const CATEGORIES: Category[] = ["الكل", "آيات وتدبر", "أحاديث", "مقتطفات", "تجارب", "مقالات"];
 
 export default function ReadingsPage() {
   const [active, setActive] = useState<Category>("الكل");
   const [expanded, setExpanded] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResult, setSearchResult] = useState<Book | null | "not-found">(null);
+  const [suggestion, setSuggestion] = useState("");
+  const [suggestionSent, setSuggestionSent] = useState(false);
 
   const filtered = active === "الكل" ? ARTICLES : ARTICLES.filter(a => a.category === active);
+
+  const handleSearch = () => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return;
+    const found = BOOKS.find(b => b.title.toLowerCase().includes(q));
+    setSearchResult(found || "not-found");
+  };
+
+  const submitSuggestion = async () => {
+  if (!suggestion.trim()) return;
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  await supabase.from("suggestions").insert({
+    user_id: session?.user.id,
+    book_name: suggestion,
+  });
+
+  await fetch("/api/suggest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bookName: suggestion }),
+  });
+
+  setSuggestion("");
+  setSuggestionSent(true);
+  setTimeout(() => setSuggestionSent(false), 4000);
+};
 
   return (
     <main>
@@ -130,6 +221,110 @@ export default function ReadingsPage() {
             </button>
           </div>
         ))}
+      </div>
+
+      {/* LIBRARY */}
+      <div className="library-section">
+        <div className="library-header">
+          <span className="section-label">المكتبة</span>
+          <h2 className="section-title">كتب مختارة</h2>
+          <p className="section-subtitle">كتب تُصحح البوصلة وتُغذي الروح — مختارة بعناية.</p>
+        </div>
+
+        {/* SEARCH */}
+        <div className="library-search-row">
+          <input
+            className="library-search-input"
+            placeholder="ابحث عن كتاب..."
+            value={searchQuery}
+            onChange={e => { setSearchQuery(e.target.value); setSearchResult(null); }}
+            onKeyDown={e => e.key === "Enter" && handleSearch()}
+          />
+          <button className="task-add-btn" onClick={handleSearch}>بحث</button>
+        </div>
+
+        {/* SEARCH RESULT */}
+        {searchResult === "not-found" && (
+          <div className="search-not-found">
+            <p>😔 الكتاب غير موجود في المكتبة حالياً.</p>
+            <p>هل تريد اقتراح إضافته؟</p>
+            <div className="suggestion-row">
+              <input
+                className="library-search-input"
+                placeholder="اكتب اسم الكتاب..."
+                value={suggestion}
+                onChange={e => setSuggestion(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && submitSuggestion()}
+              />
+              <button className="task-add-btn" onClick={submitSuggestion}>اقتراح</button>
+            </div>
+            {suggestionSent && (
+              <p className="suggestion-sent">✅ وصلنا اقتراحك — شكراً! سننظر فيه بإذن الله 🤍</p>
+            )}
+          </div>
+        )}
+
+        {searchResult && searchResult !== "not-found" && (
+          <div className="search-found">
+            <p>✅ وجدنا الكتاب!</p>
+            <div className="book-card book-card-highlight">
+              <h3 className="book-title">{searchResult.title}</h3>
+              {searchResult.author && <p className="book-author">{searchResult.author}</p>}
+              <p className="book-desc">{searchResult.description}</p>
+              <div className="book-actions">
+                {searchResult.telegramUrl ? (
+                  <a href={searchResult.telegramUrl} target="_blank" className="book-btn btn-read">📖 اقرأ</a>
+                ) : (
+                  <span className="book-soon">قريباً</span>
+                )}
+                {searchResult.mantoqUrl && (
+                  <a href={searchResult.mantoqUrl} target="_blank" className="book-btn btn-listen">🎧 استمع</a>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* BOOKS GRID */}
+        <div className="books-grid">
+          {BOOKS.map(book => (
+            <div key={book.id} className={`book-card ${!book.available ? "book-unavailable" : ""}`}>
+              <div className="book-cover">📚</div>
+              <h3 className="book-title">{book.title}</h3>
+              {book.author && <p className="book-author">{book.author}</p>}
+              <p className="book-desc">{book.description}</p>
+              <div className="book-actions">
+                {book.telegramUrl ? (
+                  <a href={book.telegramUrl} target="_blank" className="book-btn btn-read">📖 اقرأ</a>
+                ) : (
+                  <span className="book-soon">قريباً</span>
+                )}
+                {book.mantoqUrl && (
+                  <a href={book.mantoqUrl} target="_blank" className="book-btn btn-listen">🎧 استمع</a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* SUGGEST A BOOK */}
+        <div className="suggest-section">
+          <p className="suggest-title">📬 اقترح كتاباً</p>
+          <p className="suggest-subtitle">لم تجد كتابك المفضل؟ اقترحه علينا وسننظر في إضافته.</p>
+          <div className="suggestion-row">
+            <input
+              className="library-search-input"
+              placeholder="اسم الكتاب..."
+              value={suggestion}
+              onChange={e => setSuggestion(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && submitSuggestion()}
+            />
+            <button className="task-add-btn" onClick={submitSuggestion}>اقتراح</button>
+          </div>
+          {suggestionSent && (
+            <p className="suggestion-sent">✅ وصلنا اقتراحك — شكراً! سننظر فيه بإذن الله 🤍</p>
+          )}
+        </div>
       </div>
 
       <div className="hadith-section">
