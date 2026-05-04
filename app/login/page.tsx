@@ -34,7 +34,7 @@ export default function LoginPage() {
         options: { data: { name } },
       });
       if (error) setError("حدث خطأ في إنشاء الحساب — تأكد من البريد الإلكتروني");
-      else setSuccess("تم إنشاء حسابك! تحقق من بريدك لتأكيد الحساب.");
+      else setSuccess("تم إنشاء حسابك بنجاح! يمكنك الآن تسجيل الدخول لتأكيد الحساب.");
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
