@@ -41,8 +41,8 @@ export default function AudioPage() {
           </p>
         </div>
 
+        {/* الشيخ وجدان العلي */}
         <div className="scholar-block">
-
           <div className="scholar-header">
             <div className="scholar-info">
               <h2 className="scholar-name">الشيخ وجدان العلي</h2>
@@ -59,30 +59,166 @@ export default function AudioPage() {
               </div>
               <h3 className="episode-title">عصمة القرآن — لابد من تجديد الإيمان في القلوب</h3>
               <p className="episode-desc">كيف يعصمك القرآن ويجدد إيمانك — للشيخ وجدان العلي</p>
-              
-               <a href="https://on.soundcloud.com/rhVEwkUczUTmojBaBL"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="episode-btn"
-              >
+              <a href="https://on.soundcloud.com/rhVEwkUczUTmojBaBL"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
                 استمع الآن ←
               </a>
             </div>
 
-            {[2, 3, 4].map((n) => (
-              <div className="episode-card episode-soon" key={n}>
-                <div className="episode-top">
-                  <span className="episode-icon">🎧</span>
-                  <span className="episode-num">٠{n}</span>
-                </div>
-                <h3 className="episode-title">قريباً...</h3>
-                <p className="episode-desc">سيتم إضافة المزيد من السلاسل قريباً بإذن الله</p>
-                <span className="episode-soon-tag">قريباً</span>
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">🎧</span>
+                <span className="episode-num">٠٢</span>
               </div>
-            ))}
+              <h3 className="episode-title">الافتقار إلى الله</h3>
+              <p className="episode-desc">حين يُدرك القلب فقره المطلق إلى الله — للشيخ وجدان العلي</p>
+              <a href="https://on.soundcloud.com/uPdcBzhqY7Vz7UVmKz"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                استمع الآن ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">🎧</span>
+                <span className="episode-num">٠٣</span>
+              </div>
+              <h3 className="episode-title">مقام الحب وأثره الفريد في السير إلى الله</h3>
+              <p className="episode-desc">حين يملأ حب الله القلب يصبح كل شيء سهلاً — للشيخ وجدان العلي</p>
+              <a href="https://on.soundcloud.com/bb0SjlDkytLCihauly"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                استمع الآن ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">🎧</span>
+                <span className="episode-num">٠٤</span>
+              </div>
+              <h3 className="episode-title">وقد يُقال لك ما أجمل عيبك</h3>
+              <p className="episode-desc">حين يكون عيبك نعمة لم تكتشفها بعد — للشيخ وجدان العلي</p>
+              <a href="https://on.soundcloud.com/pSkCARLh8FTVgrawDQ"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                استمع الآن ←
+              </a>
+            </div>
 
           </div>
         </div>
+
+        {/* مقاطع منفصلة */}
+        <div className="scholar-block">
+          <div className="scholar-header">
+            <div className="scholar-info">
+              <h2 className="scholar-name">مقاطع مختارة</h2>
+              <p className="scholar-desc">مقاطع صوتية تلامس القلب وتُعيد توجيه البوصلة</p>
+            </div>
+          </div>
+
+          <div className="episodes-grid">
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">🎧</span>
+              </div>
+              <h3 className="episode-title">وكيف أخاف</h3>
+              <p className="episode-desc">مقطع يُعيد للقلب الطمأنينة ويُذكّره بمن بيده كل شيء</p>
+              <a href="https://on.soundcloud.com/43rGLqcmnunDPFWyW9"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                استمع الآن ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">🎧</span>
+              </div>
+              <h3 className="episode-title">سبق المفردون</h3>
+              <p className="episode-desc">حين يصبح الذكر روحاً تسري في العروق، ونوراً يملأ القلب، ونشاطاً يبعث في البدن — اكتشف سر من سبقوا الناس بلا سلاح إلا بذكر الله</p>
+              <a href="https://on.soundcloud.com/l9bzNeNtXLtewC7ZUE"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                استمع الآن ←
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        {/* سلاسل مختارة */}
+        <div className="scholar-block">
+          <div className="scholar-header">
+            <div className="scholar-info">
+              <h2 className="scholar-name">سلاسل مختارة</h2>
+              <p className="scholar-desc">سلاسل في تزكية النفس وتحرير القلب من أمراضه</p>
+            </div>
+          </div>
+
+          <div className="episodes-grid">
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">▶️</span>
+                <span className="episode-badge">يوتيوب</span>
+              </div>
+              <h3 className="episode-title">فقه النفس</h3>
+              <p className="episode-desc">
+                تعرّف على نفسك بمنهج إسلامي أصيل — سلسلة تُعينك على فهم دواخلك وكيف تُصلح ما أفسده الغفلة.
+              </p>
+              <a href="https://youtube.com/playlist?list=PLvGpI5t1gJ8RPD1JEMzntUvjyALlqaJo8"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                شاهد السلسلة ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">▶️</span>
+                <span className="episode-badge">يوتيوب</span>
+              </div>
+              <h3 className="episode-title">تذوق العبادات</h3>
+              <p className="episode-desc">
+                كيف تتذوق حلاوة العبادة وتشعر بأثرها في قلبك — سلسلة تُعيد اكتشافك للعبادة من جديد.
+              </p>
+              <a href="https://youtube.com/playlist?list=PLSFJcWy6euuDj6XSqBM-MmKhCyrXK_ywv"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                شاهد السلسلة ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">▶️</span>
+                <span className="episode-badge">يوتيوب</span>
+              </div>
+              <h3 className="episode-title">لازم تتحرر</h3>
+              <p className="episode-desc">
+                تحرّر من كل ما يُثقل روحك — سلسلة تأخذك في رحلة التخلص من القيود الداخلية نحو حرية حقيقية.
+              </p>
+              <a href="https://youtube.com/playlist?list=PLSFJcWy6euuAZPTasEUJRSrKEp85h6HPY"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                شاهد السلسلة ←
+              </a>
+            </div>
+
+            <div className="episode-card">
+              <div className="episode-top">
+                <span className="episode-icon">▶️</span>
+                <span className="episode-badge">يوتيوب</span>
+              </div>
+              <h3 className="episode-title">خبائث القلب</h3>
+              <p className="episode-desc">
+                تعرّف على أمراض القلب الخفية من حسد وكبر ورياء — وكيف تُطهّر قلبك منها بمنهج أصيل.
+              </p>
+              <a href="https://youtube.com/playlist?list=PLSFJcWy6euuBek1JZwJdqT_3rsUhXtmBv"
+                target="_blank" rel="noopener noreferrer" className="episode-btn">
+                شاهد السلسلة ←
+              </a>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
       {/* FOOTER */}

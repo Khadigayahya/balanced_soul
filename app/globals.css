@@ -1659,4 +1659,11 @@ section { padding: 6rem 5rem; }
   color: var(--muted);
   font-size: 0.9rem;
   margin-bottom: 1rem;
+}.episode-badge {
+  background: #ff0000;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-family: 'Tajawal', sans-serif;
 }
