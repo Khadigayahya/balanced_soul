@@ -1,0 +1,23 @@
+{
+  "name": "صحح بوصلة قلبك",
+  "short_name": "بوصلة قلبك",
+  "description": "منصة للتزكية والاتزان النفسي",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0edf7",
+  "theme_color": "#7c3aed",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/heart.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/heart.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

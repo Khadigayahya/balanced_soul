@@ -5,6 +5,8 @@ import AuthProvider from "./AuthProvider";
 export const metadata: Metadata = {
   title: "صحح بوصلة قلبك",
   description: "منصة للتزكية والاتزان النفسي",
+  manifest: "/manifest.json",
+  themeColor: "#7c3aed",
 };
 
 export default function RootLayout({
