@@ -10,7 +10,7 @@ const FEATURES = [
   { icon: "🎧", title: "المسموعات", desc: "سلاسل مختارة في فقه النفس، حسن التوكل، سِيَر القدوات، وفهم القرآن.", href: "/audio" },
   { icon: "📖", title: "المقروءات", desc: "مقالات قصيرة وعملية، تجارب شخصية حقيقية، ومقتطفات مختارة.", href: "/readings" },
   { icon: "📅", title: "يومياتي", desc: "خطط يومك، سجّل إنجازاتك، واحتفل بكل خطوة بتوازن.", href: "/daily" },
-  { icon: "🤲", title: "أدعيتي وأذكاري", desc: "أذكار الصباح والمساء وأدعية للمواقف المختلفة.", href: "/adhkar" },
+  { icon: "", title: "أدعيتي وأذكاري", desc: "أذكار الصباح والمساء وأدعية للمواقف المختلفة.", href: "/adhkar" },
   { icon: "💬", title: "استشارة", desc: "مساحة آمنة للاستشارة بمنهج إسلامي أصيل.", href: "/consultation" },
 ];
 
@@ -40,7 +40,7 @@ export default function Home() {
           <div className="hero-pills">
             {FEATURES.map(item => (
               <a key={item.title} href={item.href} className="hero-pill">
-                <span>{item.icon}</span>
+                {item.icon && <span>{item.icon}</span>}
                 <span>{item.title}</span>
               </a>
             ))}

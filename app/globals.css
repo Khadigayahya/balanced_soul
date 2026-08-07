@@ -200,9 +200,9 @@ main {
 section { padding: 6rem 5rem; }
 
 .section-label {
-  font-size: 0.78rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-gold);
   margin-bottom: 0.8rem;
