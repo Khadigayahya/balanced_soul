@@ -30,10 +30,10 @@ export default function LoginPage() {
     setLoading(true);
     const { error } = await supabase.auth.resend({ type: "signup", email: email.trim() });
     setLoading(false);
-    if (error) setError("تعذّر إرسال البريد، حاول مرة أخرى بعد قليل.");
+    if (error) setError(`تعذّر إرسال البريد: ${error.message}`);
     else {
       setError("");
-      setSuccess("تم إرسال رابط التأكيد من جديد — تفقّدي بريدك الإلكتروني.");
+      setSuccess("تم إرسال رابط التأكيد من جديد — تفقّدي بريدك الإلكتروني (وصندوق الرسائل غير المرغوبة).");
       setShowResend(false);
     }
   };
@@ -51,8 +51,8 @@ export default function LoginPage() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     setLoading(false);
-    if (error) setError("تعذّر إرسال رابط إعادة التعيين، حاول مرة أخرى.");
-    else setSuccess("لو البريد مسجّل لدينا، وصلك رابط لإعادة تعيين كلمة المرور.");
+    if (error) setError(`تعذّر إرسال رابط إعادة التعيين: ${error.message}`);
+    else setSuccess("لو البريد مسجّل لدينا، وصلك رابط لإعادة تعيين كلمة المرور (تفقّدي صندوق الرسائل غير المرغوبة كمان).");
   };
 
   const handleSubmit = async () => {
@@ -84,8 +84,8 @@ export default function LoginPage() {
         password: trimmedPassword,
         options: { data: { name: name.trim() } },
       });
-      if (error) setError("حدث خطأ في إنشاء الحساب — تأكد من البريد الإلكتروني");
-      else setSuccess("تم إنشاء حسابك بنجاح! افتحي بريدك الإلكتروني واضغطي على رابط التأكيد لتفعيل الحساب.");
+      if (error) setError(`تعذّر إنشاء الحساب: ${error.message}`);
+      else setSuccess("تم إنشاء حسابك بنجاح! افتحي بريدك الإلكتروني (وصندوق الرسائل غير المرغوبة) واضغطي على رابط التأكيد لتفعيل الحساب.");
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password: trimmedPassword });
       if (error) {
