@@ -2,6 +2,7 @@
 import "./login.css";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 type Mode = "login" | "signup";
@@ -48,9 +49,7 @@ export default function LoginPage() {
 
   return (
     <main>
-      <nav className="nav">
-        <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
-      </nav>
+      <Nav />
 
       <div className="login-page">
         <div className="login-card">

@@ -5,6 +5,7 @@ import FeatureCard from "@/components/FeatureCard";
 import RevealSection from "@/components/RevealSection";
 import QuoteOfDay from "@/components/QuoteOfDay";
 import SiteSearch from "@/components/SiteSearch";
+import BackToTop from "@/components/BackToTop";
 
 const FEATURES = [
   { icon: "🎧", title: "المسموعات", desc: "سلاسل مختارة في فقه النفس، حسن التوكل، سِيَر القدوات، وفهم القرآن.", href: "/audio" },
@@ -116,6 +117,7 @@ export default function Home() {
       </section>
 
       <Footer />
+      <BackToTop />
     </main>
   );
 }

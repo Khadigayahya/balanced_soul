@@ -18,7 +18,7 @@ export default function FeatureCard({ icon, title, desc, href, delay = 0 }: Feat
       className={`feature-card ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      {icon && <span className="feature-icon">{icon}</span>}
+      <span className="feature-icon">{icon}</span>
       <h3 className="feature-title">{title}</h3>
       <p className="feature-desc">{desc}</p>
     </a>
