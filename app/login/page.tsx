@@ -62,8 +62,9 @@ export default function LoginPage() {
 
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
+    const trimmedName = name.trim();
 
-    if (!trimmedEmail || !trimmedPassword) {
+    if (!trimmedEmail || !trimmedPassword || (mode === "signup" && !trimmedName)) {
       setError("يرجى ملء جميع الحقول");
       return;
     }
@@ -82,7 +83,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signUp({
         email: trimmedEmail,
         password: trimmedPassword,
-        options: { data: { name: name.trim() } },
+        options: { data: { name: trimmedName } },
       });
       if (error) setError(`تعذّر إنشاء الحساب: ${error.message}`);
       else setSuccess("تم إنشاء حسابك بنجاح! افتحي بريدك الإلكتروني (وصندوق الرسائل غير المرغوبة) واضغطي على رابط التأكيد لتفعيل الحساب.");
@@ -169,7 +170,7 @@ export default function LoginPage() {
                 <input
                   className="login-input"
                   type="text"
-                  placeholder="الاسم (اختياري)"
+                  placeholder="الاسم"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   dir="rtl"
