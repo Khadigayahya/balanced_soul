@@ -75,7 +75,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/login") return;
+    if (pathname === "/login" || pathname === "/reset-password") return;
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
