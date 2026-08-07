@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         <div dir="rtl" style="font-family: Arial; padding: 20px;">
           <h2>📚 اقتراح كتاب جديد</h2>
           <p>اقترح أحد المستخدمين إضافة الكتاب التالي:</p>
-          <h3 style="color: #0d3b2b;">${bookName}</h3>
+          <h3 style="color: #123a5e;">${bookName}</h3>
           <p>يمكنك مراجعة الاقتراحات في لوحة Supabase.</p>
         </div>
       `,

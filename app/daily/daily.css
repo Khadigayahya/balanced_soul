@@ -14,7 +14,7 @@
   white-space: nowrap;
 }
 
-.daily-header { padding: 8rem 5rem 3rem; background: rgba(247, 243, 232, 0.92); }
+.daily-header { padding: 8rem 5rem 3rem; background: rgba(238, 245, 250, 0.92); }
 
 .daily-grid {
   display: grid;
@@ -25,7 +25,7 @@
 
 .daily-card {
   background: var(--warm-white);
-  border: 1px solid rgba(16,163,127,0.12);
+  border: 1px solid rgba(30,167,224,0.12);
   border-radius: 12px;
   padding: 2rem;
 }
@@ -37,7 +37,7 @@
   color: var(--ink);
   margin-bottom: 1.5rem;
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(16,163,127,0.1);
+  border-bottom: 1px solid rgba(30,167,224,0.1);
 }
 
 /* PROGRESS */
@@ -67,7 +67,7 @@
 }
 
 .progress-bar-wrap {
-  background: rgba(16,163,127,0.1);
+  background: rgba(30,167,224,0.1);
   border-radius: 50px;
   height: 8px;
   margin-bottom: 0.5rem;
@@ -97,7 +97,7 @@
 .task-input {
   flex: 1;
   padding: 0.65rem 1rem;
-  border: 1px solid rgba(16,163,127,0.2);
+  border: 1px solid rgba(30,167,224,0.2);
   border-radius: 6px;
   background: var(--cream);
   font-family: 'Amiri', serif;
@@ -111,7 +111,7 @@
 
 .task-type-select {
   padding: 0.65rem 0.8rem;
-  border: 1px solid rgba(16,163,127,0.2);
+  border: 1px solid rgba(30,167,224,0.2);
   border-radius: 6px;
   background: var(--cream);
   font-family: 'Amiri', serif;
@@ -153,7 +153,7 @@
   padding: 0.7rem 0.8rem;
   border-radius: 6px;
   background: var(--cream);
-  border: 1px solid rgba(16,163,127,0.08);
+  border: 1px solid rgba(30,167,224,0.08);
   transition: opacity 0.2s;
 }
 
@@ -175,7 +175,7 @@
   transition: background 0.2s;
 }
 
-.task-check:hover { background: rgba(201,169,97,0.1); }
+.task-check:hover { background: rgba(79,195,247,0.1); }
 
 .task-text {
   flex: 1;
@@ -191,8 +191,8 @@
   font-family: 'Tajawal', sans-serif;
 }
 
-.badge-deen { background: rgba(16,163,127,0.1); color: var(--primary); }
-.badge-dunya { background: rgba(201,169,97,0.1); color: var(--accent-gold); }
+.badge-deen { background: rgba(30,167,224,0.1); color: var(--primary); }
+.badge-dunya { background: rgba(79,195,247,0.1); color: var(--accent-gold); }
 
 .task-delete {
   background: none;
@@ -223,7 +223,7 @@
 
 .task-date-input {
   padding: 0.4rem 0.6rem;
-  border: 1px solid rgba(16,163,127,0.2);
+  border: 1px solid rgba(30,167,224,0.2);
   border-radius: 8px;
   font-family: 'Tajawal', sans-serif;
   font-size: 0.85rem;
@@ -255,11 +255,11 @@
   background: var(--cream);
   cursor: pointer;
   transition: background 0.2s;
-  border: 1px solid rgba(16,163,127,0.08);
+  border: 1px solid rgba(30,167,224,0.08);
 }
 
-.adhkar-item:hover { background: rgba(16,163,127,0.05); }
-.adhkar-done { background: rgba(16,163,127,0.06) !important; }
+.adhkar-item:hover { background: rgba(30,167,224,0.05); }
+.adhkar-done { background: rgba(30,167,224,0.06) !important; }
 .adhkar-done .adhkar-text { color: var(--muted); }
 
 .adhkar-check {
@@ -294,7 +294,7 @@
   padding: 0.8rem;
   border-radius: 6px;
   background: var(--cream);
-  border: 1px solid rgba(201,169,97,0.12);
+  border: 1px solid rgba(79,195,247,0.12);
 }
 
 .achievement-icon { color: var(--accent-gold); font-size: 0.9rem; margin-top: 0.2rem; flex-shrink: 0; }
