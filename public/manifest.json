@@ -4,8 +4,8 @@
   "description": "منصة للتزكية والاتزان النفسي",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f0edf7",
-  "theme_color": "#7c3aed",
+  "background_color": "#f7f3e8",
+  "theme_color": "#0d3b2b",
   "lang": "ar",
   "dir": "rtl",
   "icons": [

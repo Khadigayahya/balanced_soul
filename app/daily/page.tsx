@@ -1,14 +1,22 @@
 "use client";
+import "./daily.css";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
+import { DAILY_ADHKAR_CHECKLIST } from "@/data/adhkar";
+
+type TaskType = "دين" | "دنيا";
+type DurationType = "يوم" | "أسبوع" | "شهر" | "مخصص";
 
 interface Task {
   id: number;
   text: string;
   done: boolean;
-  type: "دين" | "دنيا";
+  type: TaskType;
   start_date: string;
-  duration_type: "يوم" | "أسبوع" | "شهر" | "مخصص";
+  duration_type: DurationType;
   end_date: string;
 }
 
@@ -18,15 +26,7 @@ interface Achievement {
   date: string;
 }
 
-const ADHKAR = [
-  "سبحان الله وبحمده، سبحان الله العظيم",
-  "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
-  "حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم",
-  "اللهم أعني على ذكرك وشكرك وحسن عبادتك",
-  "رب اشرح لي صدري ويسر لي أمري",
-];
-
-const calcEndDate = (start: string, duration: string, customEnd: string) => {
+const calcEndDate = (start: string, duration: DurationType, customEnd: string) => {
   if (duration === "مخصص") return customEnd;
   const d = new Date(start);
   if (duration === "يوم") d.setDate(d.getDate() + 1);
@@ -38,15 +38,14 @@ const calcEndDate = (start: string, duration: string, customEnd: string) => {
 export default function DailyPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState("");
-  const [taskType, setTaskType] = useState<"دين" | "دنيا">("دنيا");
-  const [durationType, setDurationType] = useState<"يوم" | "أسبوع" | "شهر" | "مخصص">("يوم");
+  const [taskType, setTaskType] = useState<TaskType>("دنيا");
+  const [durationType, setDurationType] = useState<DurationType>("يوم");
   const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
   const [customEnd, setCustomEnd] = useState("");
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [newAchievement, setNewAchievement] = useState("");
   const [celebrate, setCelebrate] = useState(false);
-  const [adhkarDone, setAdhkarDone] = useState<boolean[]>(Array(ADHKAR.length).fill(false));
-  const [todayDhikr, setTodayDhikr] = useState(0);
+  const [adhkarDone, setAdhkarDone] = useState<boolean[]>(Array(DAILY_ADHKAR_CHECKLIST.length).fill(false));
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -152,7 +151,6 @@ export default function DailyPage() {
   const saveAdhkar = (updated: boolean[]) => {
     setAdhkarDone(updated);
     localStorage.setItem("bawsala-adhkar", JSON.stringify(updated));
-    setTodayDhikr(updated.filter(Boolean).length);
   };
 
   const toggleAdhkar = (i: number) => {
@@ -169,17 +167,7 @@ export default function DailyPage() {
 
   return (
     <main>
-      <nav className="nav">
-        <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
-        <ul className="nav-links">
-          <li><a href="/#vision">رؤيتنا</a></li>
-          <li><a href="/audio">المسموعات</a></li>
-          <li><a href="/readings">المقروءات</a></li>
-          <li><a href="/daily">يومياتي</a></li>
-          <li><a href="/adhkar">أذكاري</a></li>
-          <li><a href="/consultation">استشارة</a></li>
-        </ul>
-      </nav>
+      <Nav />
 
       {celebrate && (
         <div className="celebrate-banner">
@@ -230,12 +218,12 @@ export default function DailyPage() {
             />
             <div className="task-meta-row">
               <select className="task-type-select" value={taskType}
-                onChange={e => setTaskType(e.target.value as "دين" | "دنيا")}>
+                onChange={e => setTaskType(e.target.value as TaskType)}>
                 <option value="دنيا">دنيا</option>
                 <option value="دين">دين</option>
               </select>
               <select className="task-type-select" value={durationType}
-                onChange={e => setDurationType(e.target.value as any)}>
+                onChange={e => setDurationType(e.target.value as DurationType)}>
                 <option value="يوم">يوم</option>
                 <option value="أسبوع">أسبوع</option>
                 <option value="شهر">شهر</option>
@@ -277,7 +265,7 @@ export default function DailyPage() {
         <div className="daily-card adhkar-card">
           <h2 className="card-title">🤲 أذكار اليوم</h2>
           <ul className="adhkar-list">
-            {ADHKAR.map((dhikr, i) => (
+            {DAILY_ADHKAR_CHECKLIST.map((dhikr, i) => (
               <li key={i}
                 className={`adhkar-item ${adhkarDone[i] ? "adhkar-done" : ""}`}
                 onClick={() => toggleAdhkar(i)}>
@@ -286,7 +274,7 @@ export default function DailyPage() {
               </li>
             ))}
           </ul>
-          <p className="adhkar-progress">{adhkarCount} / {ADHKAR.length} أذكار مكتملة</p>
+          <p className="adhkar-progress">{adhkarCount} / {DAILY_ADHKAR_CHECKLIST.length} أذكار مكتملة</p>
         </div>
 
         <div className="daily-card achievements-card">
@@ -327,10 +315,8 @@ export default function DailyPage() {
         <p className="hadith-source">صحيح مسلم</p>
       </div>
 
-      <footer className="footer">
-        <a href="/" className="footer-logo">صحح <span>بوصلة</span> قلبك</a>
-        <p>رحلة التزكية والاتزان · ٢٠٢٦</p>
-      </footer>
+      <Footer />
+      <BackToTop />
     </main>
   );
 }

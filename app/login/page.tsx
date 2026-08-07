@@ -1,6 +1,8 @@
 "use client";
+import "./login.css";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import Footer from "@/components/Footer";
 
 type Mode = "login" | "signup";
 
@@ -119,10 +121,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <footer className="footer">
-        <a href="/" className="footer-logo">صحح <span>بوصلة</span> قلبك</a>
-        <p>رحلة التزكية والاتزان · ٢٠٢٦</p>
-      </footer>
+      <Footer />
     </main>
   );
 }

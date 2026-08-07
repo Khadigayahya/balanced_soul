@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import webpush from "web-push";
 import { createClient } from "@supabase/supabase-js";
+import { FIXED_MESSAGES } from "@/data/notifications";
 
 webpush.setVapidDetails(
   process.env.VAPID_EMAIL!,
@@ -17,10 +18,7 @@ export async function GET() {
   const { data } = await supabase.from("push_subscriptions").select("*");
   if (!data) return NextResponse.json({ success: false });
 
-  const message = {
-    title: "🌆 أذكار المساء",
-    body: "لا تنسَ أذكار المساء — حصنٌ لك حتى الصباح 🤍",
-  };
+  const message = FIXED_MESSAGES[1];
 
   await Promise.all(
     data.map(row =>

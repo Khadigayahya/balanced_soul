@@ -1,0 +1,170 @@
+export type ReadingCategory = "الكل" | "آيات وتدبر" | "أحاديث" | "مقتطفات" | "تجارب" | "مقالات";
+
+export interface Article {
+  id: number;
+  category: ReadingCategory;
+  title: string;
+  body: string;
+  source?: string;
+  readTime: string;
+}
+
+export const READING_CATEGORIES: ReadingCategory[] = ["الكل", "آيات وتدبر", "أحاديث", "مقتطفات", "تجارب", "مقالات"];
+
+export const ARTICLES: Article[] = [
+  {
+    id: 1,
+    category: "آيات وتدبر",
+    title: "﴿وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا﴾",
+    body: "التقوى ليست مجرد ترك المحرمات — هي حالة قلبية دائمة من المراقبة والحضور مع الله. ومن أدام هذه الحال وجد في كل ضيق مخرجاً لم يكن يحتسبه.",
+    source: "سورة الطلاق — آية ٢",
+    readTime: "دقيقتان",
+  },
+  {
+    id: 2,
+    category: "أحاديث",
+    title: "«عجباً لأمر المؤمن»",
+    body: "قال ﷺ: «عجباً لأمر المؤمن، إن أمره كله خير، وليس ذلك لأحد إلا للمؤمن؛ إن أصابته سرّاء شكر فكان خيراً له، وإن أصابته ضرّاء صبر فكان خيراً له». هذا الحديث يرسم لنا صورة الإنسان المتوازن الذي لا تهزّه الأحوال.",
+    source: "صحيح مسلم",
+    readTime: "٣ دقائق",
+  },
+  {
+    id: 3,
+    category: "مقتطفات",
+    title: "الفرق بين الهم والحزن",
+    body: "قال ابن القيم رحمه الله: الهمّ يتعلق بالمستقبل، والحزن يتعلق بالماضي، وكلاهما من تسلط الشيطان على القلب — فمن عاش في لحظته الحاضرة مع الله، أُغلقت عليه أبواب الهم والحزن.",
+    source: "زاد المعاد — ابن القيم",
+    readTime: "دقيقتان",
+  },
+  {
+    id: 4,
+    category: "تجارب",
+    title: "حين توقفت عن مقاومة القدر",
+    body: "كنت أقاوم كل ما لا يسير وفق خطتي، حتى أدركت أن المقاومة نفسها هي مصدر الألم لا الحدث ذاته. حين سلّمت أمري لله حقاً — لا قولاً — وجدت سكينة لم أعهدها من قبل.",
+    readTime: "٤ دقائق",
+  },
+  {
+    id: 5,
+    category: "مقالات",
+    title: "كيف تتعامل مع المزاج المتقلب؟",
+    body: "المزاج المتقلب ليس عيباً في شخصيتك — هو إشارة من نفسك أنها تحتاج انتباهك. تعلّم أن تقرأ مزاجك كما تقرأ إشارات الطريق: لا تقاومها، بل افهم ما تريد أن تقوله لك.",
+    readTime: "٥ دقائق",
+  },
+  {
+    id: 6,
+    category: "آيات وتدبر",
+    title: "﴿أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾",
+    body: "الطمأنينة ليست غياب المشكلات — هي حضور الله في قلبك وسط المشكلات. الذكر ليس مجرد ألفاظ تقولها بلسانك، بل هو استحضار عظمة الله في كل لحظة.",
+    source: "سورة الرعد — آية ٢٨",
+    readTime: "دقيقتان",
+  },
+];
+
+export interface Book {
+  id: number;
+  title: string;
+  author: string;
+  description: string;
+  telegramUrl?: string;
+  mantoqUrl?: string;
+  available: boolean;
+}
+
+export const BOOKS: Book[] = [
+  {
+    id: 1,
+    title: "القرآن الكريم",
+    author: "كلام الله تعالى",
+    description: "المصدر الأول والأصيل لتزكية النفس وطمأنينة القلب — كلام الله الذي لا تنقضي عجائبه.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/4",
+    mantoqUrl: "https://t.me/sakyina",
+    available: true,
+  },
+  {
+    id: 7,
+    title: "القرآن تدبر وعمل",
+    author: "د. عويض العطوي",
+    description: "منهج عملي للتفاعل مع القرآن الكريم — لا تقرأه فحسب، بل تتدبره وتعيشه في يومك.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/5",
+    mantoqUrl: "https://t.me/sakyina",
+    available: true,
+  },
+  {
+    id: 8,
+    title: "المختصر في تفسير القرآن",
+    author: "مركز تفسير للدراسات القرآنية",
+    description: "تفسير ميسّر ومختصر للقرآن الكريم — يُعينك على فهم كلام الله بوضوح وسهولة.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/6",
+    mantoqUrl: "https://t.me/sakyina",
+    available: true,
+  },
+  {
+    id: 2,
+    title: "الإكسير — خلاصة أعمال القلوب من مدارج السالكين",
+    author: "مجموعة من الباحثين",
+    description: "خلاصة مُصفّاة من أعمق كتب ابن القيم في تزكية النفس — رحلة في منازل القلب من التوبة إلى المحبة، مُقدَّمة بأسلوب ميسّر.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/9",
+    mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=91F3xDTV2Yxzr9lunB3s",
+    available: true,
+  },
+  {
+    id: 3,
+    title: "الداء والدواء",
+    author: "ابن القيم الجوزية",
+    description: "علاج أمراض القلوب بمنهج نبوي أصيل — للنفس التي تبحث عن شفاء حقيقي.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/7",
+    mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=0WEfMAaWQESasCTfSka8",
+    available: true,
+  },
+  {
+    id: 4,
+    title: "شمائل النبي وأخلاقه",
+    author: "الإمام الترمذي",
+    description: "تعرّف على النبي ﷺ من قريب — أخلاقه وهديه وبشريته التي تملأ القلب محبةً ولهفةً للقاء.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/11",
+    available: true,
+  },
+  {
+    id: 5,
+    title: "نظرية الفستق",
+    author: "د. خالد المنيع",
+    description: "كتاب معاصر يتحدث عن التفكير الإيجابي والنمو الشخصي من منظور إسلامي.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/12",
+    available: true,
+  },
+  {
+    id: 6,
+    title: "خواطر فتىً لم يرحل",
+    author: "أحمد شقير",
+    description: "من قلب شاب لم تُطفئ الدنيا جذوته — أحمد شقير يكتب خواطره بصدق نادر، عن الإيمان والحب والهوية والتحديات، في كلمات تهزّ القلب وتُعيد توجيه البوصلة نحو الله.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/3",
+    available: true,
+  },
+  {
+    id: 9,
+    title: "لصوص الصحة النفسية",
+    author: "نور النومان",
+    description: "كتاب يكشف العوامل الخفية التي تسرق صحتك النفسية — ويضع بين يديك أدوات عملية لاستعادة توازنك وسلامتك الداخلية.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/8",
+    mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=VGhbjsFhIdZmzxhmjzku",
+    available: true,
+  },
+  {
+    id: 10,
+    title: "ثاني اثنين",
+    author: "أدهم الشرقاوي",
+    description: "مهداة إلى الرجل الذي لم يكن نبياً ولكنه لم يكن أيضا من الناس — أدهم الشرقاوي يروي سيرة أبي بكر الصديق، الرجل الذي وقف في منزلة وحده: أدنى من الأنبياء قليلَا وأعلى من الناس كثيراً.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/10",
+    mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=78OVJXVCXjpiIMuj310N",
+    available: true,
+  },
+  {
+    id: 11,
+    title: "عظة الناشئين",
+    author: "مصطفى الغلاييني",
+    description: "توجيهات تربوية وأخلاقية موجّهة للشباب والناشئة — بأسلوب بسيط وعظي يجمع بين جمال التعبير ووضوح التوجيه، ويُعالج قضايا السلوك والقيم وبناء الشخصية في ضوء مبادئ الإسلام.",
+    telegramUrl: "https://t.me/Balanced_Soul_123/13",
+    mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=SbKCed5nEVID6C8SGgLV",
+    available: true,
+  },
+];

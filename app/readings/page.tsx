@@ -1,184 +1,16 @@
 "use client";
+import "./readings.css";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-
-type Category = "الكل" | "آيات وتدبر" | "أحاديث" | "مقتطفات" | "تجارب" | "مقالات";
-
-interface Article {
-  id: number;
-  category: Category;
-  title: string;
-  body: string;
-  source?: string;
-  readTime: string;
-}
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  description: string;
-  telegramUrl?: string;
-  mantoqUrl?: string;
-  available: boolean;
-}
-
-const ARTICLES: Article[] = [
-  {
-    id: 1,
-    category: "آيات وتدبر",
-    title: "﴿وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا﴾",
-    body: "التقوى ليست مجرد ترك المحرمات — هي حالة قلبية دائمة من المراقبة والحضور مع الله. ومن أدام هذه الحال وجد في كل ضيق مخرجاً لم يكن يحتسبه.",
-    source: "سورة الطلاق — آية ٢",
-    readTime: "دقيقتان",
-  },
-  {
-    id: 2,
-    category: "أحاديث",
-    title: "«عجباً لأمر المؤمن»",
-    body: "قال ﷺ: «عجباً لأمر المؤمن، إن أمره كله خير، وليس ذلك لأحد إلا للمؤمن؛ إن أصابته سرّاء شكر فكان خيراً له، وإن أصابته ضرّاء صبر فكان خيراً له». هذا الحديث يرسم لنا صورة الإنسان المتوازن الذي لا تهزّه الأحوال.",
-    source: "صحيح مسلم",
-    readTime: "٣ دقائق",
-  },
-  {
-    id: 3,
-    category: "مقتطفات",
-    title: "الفرق بين الهم والحزن",
-    body: "قال ابن القيم رحمه الله: الهمّ يتعلق بالمستقبل، والحزن يتعلق بالماضي، وكلاهما من تسلط الشيطان على القلب — فمن عاش في لحظته الحاضرة مع الله، أُغلقت عليه أبواب الهم والحزن.",
-    source: "زاد المعاد — ابن القيم",
-    readTime: "دقيقتان",
-  },
-  {
-    id: 4,
-    category: "تجارب",
-    title: "حين توقفت عن مقاومة القدر",
-    body: "كنت أقاوم كل ما لا يسير وفق خطتي، حتى أدركت أن المقاومة نفسها هي مصدر الألم لا الحدث ذاته. حين سلّمت أمري لله حقاً — لا قولاً — وجدت سكينة لم أعهدها من قبل.",
-    readTime: "٤ دقائق",
-  },
-  {
-    id: 5,
-    category: "مقالات",
-    title: "كيف تتعامل مع المزاج المتقلب؟",
-    body: "المزاج المتقلب ليس عيباً في شخصيتك — هو إشارة من نفسك أنها تحتاج انتباهك. تعلّم أن تقرأ مزاجك كما تقرأ إشارات الطريق: لا تقاومها، بل افهم ما تريد أن تقوله لك.",
-    readTime: "٥ دقائق",
-  },
-  {
-    id: 6,
-    category: "آيات وتدبر",
-    title: "﴿أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾",
-    body: "الطمأنينة ليست غياب المشكلات — هي حضور الله في قلبك وسط المشكلات. الذكر ليس مجرد ألفاظ تقولها بلسانك، بل هو استحضار عظمة الله في كل لحظة.",
-    source: "سورة الرعد — آية ٢٨",
-    readTime: "دقيقتان",
-  },
-];
-
-const BOOKS: Book[] = [
-  {
-  id: 1,
-  title: "القرآن الكريم",
-  author: "كلام الله تعالى",
-  description: "المصدر الأول والأصيل لتزكية النفس وطمأنينة القلب — كلام الله الذي لا تنقضي عجائبه.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/4",
-  mantoqUrl: "https://t.me/sakyina",
-  available: true,
-},
-{
-  id: 7,
-  title: "القرآن تدبر وعمل",
-  author: "د. عويض العطوي",
-  description: "منهج عملي للتفاعل مع القرآن الكريم — لا تقرأه فحسب، بل تتدبره وتعيشه في يومك.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/5",
-  mantoqUrl: "https://t.me/sakyina",
-  available: true,
-},
-{
-  id: 8,
-  title: "المختصر في تفسير القرآن",
-  author: "مركز تفسير للدراسات القرآنية",
-  description: "تفسير ميسّر ومختصر للقرآن الكريم — يُعينك على فهم كلام الله بوضوح وسهولة.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/6",
-  mantoqUrl: "https://t.me/sakyina",
-  available: true,
-},
-  {
-  id: 2,
-  title: "الإكسير — خلاصة أعمال القلوب من مدارج السالكين",
-  author: "مجموعة من الباحثين",
-  description: "خلاصة مُصفّاة من أعمق كتب ابن القيم في تزكية النفس — رحلة في منازل القلب من التوبة إلى المحبة، مُقدَّمة بأسلوب ميسّر.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/9",
-  mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=91F3xDTV2Yxzr9lunB3s",
-  available: true,
-},
-  {
-  id: 3,
-  title: "الداء والدواء",
-  author: "ابن القيم الجوزية",
-  description: "علاج أمراض القلوب بمنهج نبوي أصيل — للنفس التي تبحث عن شفاء حقيقي.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/7",
-  mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=0WEfMAaWQESasCTfSka8",
-  available: true,
-},
-  {
-  id: 4,
-  title: "شمائل النبي وأخلاقه",
-  author: "الإمام الترمذي",
-  description: "تعرّف على النبي ﷺ من قريب — أخلاقه وهديه وبشريته التي تملأ القلب محبةً ولهفةً للقاء.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/11",
-  mantoqUrl: undefined,
-  available: true,
-},
-  {
-  id: 5,
-  title: "نظرية الفستق",
-  author: "د. خالد المنيع",
-  description: "كتاب معاصر يتحدث عن التفكير الإيجابي والنمو الشخصي من منظور إسلامي.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/12",
-  mantoqUrl: undefined,
-  available: true,
-},
-  {
-    id: 6,
-    title: "خواطر فتىً لم يرحل",
-    author: "أحمد شقير",
-    description: "من قلب شاب لم تُطفئ الدنيا جذوته — أحمد شقير يكتب خواطره بصدق نادر، عن الإيمان والحب والهوية والتحديات، في كلمات تهزّ القلب وتُعيد توجيه البوصلة نحو الله.",
-    telegramUrl: "https://t.me/Balanced_Soul_123/3",
-    mantoqUrl: undefined,
-    available: true,
-  },
-  {
-  id: 9,
-  title: "لصوص الصحة النفسية",
-  author: "نور النومان",
-  description: "كتاب يكشف العوامل الخفية التي تسرق صحتك النفسية — ويضع بين يديك أدوات عملية لاستعادة توازنك وسلامتك الداخلية.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/8",
-  mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=VGhbjsFhIdZmzxhmjzku",
-  available: true,
-},
-{
-  id: 10,
-  title: "ثاني اثنين",
-  author: "أدهم الشرقاوي",
-  description: "مهداة إلى الرجل الذي لم يكن نبياً ولكنه لم يكن أيضا من الناس — أدهم الشرقاوي يروي سيرة أبي بكر الصديق، الرجل الذي وقف في منزلة وحده: أدنى من الأنبياء قليلَا وأعلى من الناس كثيراً.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/10",
-  mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=78OVJXVCXjpiIMuj310N",
-  available: true,
-},
-{
-  id: 11,
-  title: "عظة الناشئين",
-  author: "مصطفى الغلاييني",
-  description: "توجيهات تربوية وأخلاقية موجّهة للشباب والناشئة — بأسلوب بسيط وعظي يجمع بين جمال التعبير ووضوح التوجيه، ويُعالج قضايا السلوك والقيم وبناء الشخصية في ضوء مبادئ الإسلام.",
-  telegramUrl: "https://t.me/Balanced_Soul_123/13",
-  mantoqUrl: "https://go.mantooq.com/main/bookDetails?book_guid=SbKCed5nEVID6C8SGgLV",
-  available: true,
-},
-];
-
-const CATEGORIES: Category[] = ["الكل", "آيات وتدبر", "أحاديث", "مقتطفات", "تجارب", "مقالات"];
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
+import ReadingCard from "@/components/ReadingCard";
+import BookCard from "@/components/BookCard";
+import { ARTICLES, BOOKS, READING_CATEGORIES, type ReadingCategory, type Book } from "@/data/readings";
 
 export default function ReadingsPage() {
-  const [active, setActive] = useState<Category>("الكل");
-  const [expanded, setExpanded] = useState<number | null>(null);
+  const [active, setActive] = useState<ReadingCategory>("الكل");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<Book | null | "not-found">(null);
   const [suggestion, setSuggestion] = useState("");
@@ -194,38 +26,28 @@ export default function ReadingsPage() {
   };
 
   const submitSuggestion = async () => {
-  if (!suggestion.trim()) return;
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  await supabase.from("suggestions").insert({
-    user_id: session?.user.id,
-    book_name: suggestion,
-  });
+    if (!suggestion.trim()) return;
+    const { data: { session } } = await supabase.auth.getSession();
 
-  await fetch("/api/suggest", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ bookName: suggestion }),
-  });
+    await supabase.from("suggestions").insert({
+      user_id: session?.user.id,
+      book_name: suggestion,
+    });
 
-  setSuggestion("");
-  setSuggestionSent(true);
-  setTimeout(() => setSuggestionSent(false), 4000);
-};
+    await fetch("/api/suggest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookName: suggestion }),
+    });
+
+    setSuggestion("");
+    setSuggestionSent(true);
+    setTimeout(() => setSuggestionSent(false), 4000);
+  };
 
   return (
     <main>
-      <nav className="nav">
-        <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
-        <ul className="nav-links">
-          <li><a href="/#vision">رؤيتنا</a></li>
-          <li><a href="/audio">المسموعات</a></li>
-          <li><a href="/readings">المقروءات</a></li>
-          <li><a href="/daily">يومياتي</a></li>
-          <li><a href="/adhkar">أذكاري</a></li>
-          <li><a href="/consultation">استشارة</a></li>
-        </ul>
-      </nav>
+      <Nav />
 
       <div className="readings-header">
         <span className="section-label">المقروءات</span>
@@ -237,7 +59,7 @@ export default function ReadingsPage() {
 
       {/* FILTER */}
       <div className="readings-filter">
-        {CATEGORIES.map(cat => (
+        {READING_CATEGORIES.map(cat => (
           <button
             key={cat}
             className={`filter-btn ${active === cat ? "filter-active" : ""}`}
@@ -250,29 +72,8 @@ export default function ReadingsPage() {
 
       {/* ARTICLES */}
       <div className="readings-grid">
-        {filtered.map(article => (
-          <div
-            key={article.id}
-            className={`reading-card ${expanded === article.id ? "reading-expanded" : ""}`}
-          >
-            <div className="reading-top">
-              <span className="reading-category">{article.category}</span>
-              <span className="reading-time">⏱ {article.readTime}</span>
-            </div>
-            <h2 className="reading-title">{article.title}</h2>
-            <p className={`reading-body ${expanded === article.id ? "" : "reading-clamp"}`}>
-              {article.body}
-            </p>
-            {article.source && (
-              <p className="reading-source">— {article.source}</p>
-            )}
-            <button
-              className="reading-toggle"
-              onClick={() => setExpanded(expanded === article.id ? null : article.id)}
-            >
-              {expanded === article.id ? "إغلاق ↑" : "اقرأ أكثر ↓"}
-            </button>
-          </div>
+        {filtered.map((article, i) => (
+          <ReadingCard key={article.id} article={article} delay={(i % 3) * 80} />
         ))}
       </div>
 
@@ -320,43 +121,14 @@ export default function ReadingsPage() {
         {searchResult && searchResult !== "not-found" && (
           <div className="search-found">
             <p>✅ وجدنا الكتاب!</p>
-            <div className="book-card book-card-highlight">
-              <h3 className="book-title">{searchResult.title}</h3>
-              {searchResult.author && <p className="book-author">{searchResult.author}</p>}
-              <p className="book-desc">{searchResult.description}</p>
-              <div className="book-actions">
-                {searchResult.telegramUrl ? (
-                  <a href={searchResult.telegramUrl} target="_blank" className="book-btn btn-read">📖 اقرأ</a>
-                ) : (
-                  <span className="book-soon">قريباً</span>
-                )}
-                {searchResult.mantoqUrl && (
-                  <a href={searchResult.mantoqUrl} target="_blank" className="book-btn btn-listen">🎧 استمع</a>
-                )}
-              </div>
-            </div>
+            <BookCard book={searchResult} highlight />
           </div>
         )}
 
         {/* BOOKS GRID */}
         <div className="books-grid">
-          {BOOKS.map(book => (
-            <div key={book.id} className={`book-card ${!book.available ? "book-unavailable" : ""}`}>
-              <div className="book-cover">📚</div>
-              <h3 className="book-title">{book.title}</h3>
-              {book.author && <p className="book-author">{book.author}</p>}
-              <p className="book-desc">{book.description}</p>
-              <div className="book-actions">
-                {book.telegramUrl ? (
-                  <a href={book.telegramUrl} target="_blank" className="book-btn btn-read">📖 اقرأ</a>
-                ) : (
-                  <span className="book-soon">قريباً</span>
-                )}
-                {book.mantoqUrl && (
-                  <a href={book.mantoqUrl} target="_blank" className="book-btn btn-listen">🎧 استمع</a>
-                )}
-              </div>
-            </div>
+          {BOOKS.map((book, i) => (
+            <BookCard key={book.id} book={book} delay={(i % 3) * 80} />
           ))}
         </div>
 
@@ -385,10 +157,8 @@ export default function ReadingsPage() {
         <p className="hadith-source">صحيح مسلم</p>
       </div>
 
-      <footer className="footer">
-        <a href="/" className="footer-logo">صحح <span>بوصلة</span> قلبك</a>
-        <p>رحلة التزكية والاتزان · ٢٠٢٦</p>
-      </footer>
+      <Footer />
+      <BackToTop />
     </main>
   );
 }

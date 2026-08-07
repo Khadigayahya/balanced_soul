@@ -1,11 +1,19 @@
 "use client";
+import "./consultation.css";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
   image?: string;
+}
+
+interface ConversationRow {
+  role: "user" | "assistant";
+  content: string;
 }
 
 const SUGGESTIONS = [
@@ -15,13 +23,13 @@ const SUGGESTIONS = [
   "أشعر بالحزن ولا أعرف السبب",
 ];
 
+const WELCOME_MESSAGE: Message = {
+  role: "assistant",
+  content: "السلام عليكم ورحمة الله 🤍\nأنا مساعدك في منصة صحح بوصلة قلبك — يمكنك مشاركتي ما يشغل بالك، وسأكون معك بإذن الله.",
+};
+
 export default function ConsultationPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "السلام عليكم ورحمة الله 🤍\nأنا مساعدك في منصة صحح بوصلة قلبك — يمكنك مشاركتي ما يشغل بالك، وسأكون معك بإذن الله.",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -47,8 +55,8 @@ export default function ConsultationPage() {
         .order("created_at", { ascending: true });
 
       if (data && data.length > 0) {
-        const loaded: Message[] = data.map((m: any) => ({
-          role: m.role as "user" | "assistant",
+        const loaded: Message[] = (data as ConversationRow[]).map((m) => ({
+          role: m.role,
           content: m.content,
         }));
         setMessages(loaded);
@@ -76,10 +84,7 @@ export default function ConsultationPage() {
   const clearConversation = async () => {
     if (!userId) return;
     await supabase.from("conversations").delete().eq("user_id", userId);
-    setMessages([{
-      role: "assistant",
-      content: "السلام عليكم ورحمة الله 🤍\nأنا مساعدك في منصة صحح بوصلة قلبك — يمكنك مشاركتي ما يشغل بالك، وسأكون معك بإذن الله.",
-    }]);
+    setMessages([WELCOME_MESSAGE]);
   };
 
   const send = async (text?: string) => {
@@ -116,17 +121,7 @@ export default function ConsultationPage() {
 
   return (
     <main>
-      <nav className="nav">
-        <a href="/" className="nav-logo">صحح <span>بوصلة</span> قلبك</a>
-        <ul className="nav-links">
-          <li><a href="/#vision">رؤيتنا</a></li>
-          <li><a href="/audio">المسموعات</a></li>
-          <li><a href="/readings">المقروءات</a></li>
-          <li><a href="/daily">يومياتي</a></li>
-          <li><a href="/adhkar">أذكاري</a></li>
-          <li><a href="/consultation">استشارة</a></li>
-        </ul>
-      </nav>
+      <Nav />
 
       <div className="chat-page">
         <div className="chat-header">
@@ -203,10 +198,7 @@ export default function ConsultationPage() {
         </div>
       </div>
 
-      <footer className="footer">
-        <a href="/" className="footer-logo">صحح <span>بوصلة</span> قلبك</a>
-        <p>رحلة التزكية والاتزان · ٢٠٢٦</p>
-      </footer>
+      <Footer />
     </main>
   );
 }
