@@ -22,11 +22,24 @@
 .chat-suggestions {
   display: flex;
   gap: 0.7rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0.3rem 0.2rem;
+  scrollbar-width: thin;
+}
+
+.chat-suggestions::-webkit-scrollbar {
+  height: 5px;
+}
+
+.chat-suggestions::-webkit-scrollbar-thumb {
+  background: rgba(18,58,94,0.2);
+  border-radius: 50px;
 }
 
 .suggestion-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 0.5rem 1.1rem;
   border-radius: 50px;
   border: 1px solid rgba(30,167,224,0.2);
