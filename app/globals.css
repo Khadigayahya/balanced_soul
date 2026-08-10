@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+/* يمنع عناصر الإدخال من إجبار صفوف flex على الفيض عند ضيق المساحة (مشكلة flexbox معروفة) */
+input, select, textarea {
+  min-width: 0;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;

@@ -108,7 +108,7 @@ export default function Home() {
           <p className="section-label" style={{ textAlign: "center" }}>ابدأ اليوم</p>
           <h2 className="section-title">الرحلة من هنا تبدأ</h2>
           <p className="section-subtitle" style={{ margin: "0 auto 2.5rem", textAlign: "center" }}>
-            كل خطوة صغيرة نحو نفسك تستحق. ابدأ برحلتك الان
+            كل خطوة صغيرة نحو نفسك تستحق أن تُخطى — ابدأ رحلتك الآن.
           </p>
           <a href="/audio" className="btn-primary" style={{ fontSize: "1.1rem", padding: "1rem 2.8rem" }}>
             اكتشف المنصة ←

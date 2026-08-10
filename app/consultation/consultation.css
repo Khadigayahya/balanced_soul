@@ -302,6 +302,7 @@
 
 .chat-input {
   flex: 1;
+  min-width: 0;
   padding: 0.85rem 1.2rem;
   border: 1px solid rgba(30,167,224,0.2);
   border-radius: 8px;
@@ -361,4 +362,7 @@
   .chat-main { padding: 3.5rem 1rem 1rem; }
   .chat-bubble { max-width: 95%; }
   .chat-greeting { font-size: 1.6rem; }
+  .chat-composer { gap: 0.5rem; }
+  .chat-send-btn { padding: 0.85rem 1.1rem; }
+  .image-upload-btn { padding: 0.85rem 0.7rem; }
 }
