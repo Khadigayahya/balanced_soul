@@ -21,7 +21,7 @@ export default function ReadingsPage() {
   const handleSearch = () => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return;
-    const found = BOOKS.find(b => b.title.toLowerCase().includes(q));
+    const found = BOOKS.find(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q));
     setSearchResult(found || "not-found");
   };
 
