@@ -38,7 +38,7 @@ export default function AdhkarCard({ dhikr, count, onIncrement, onReset, delay =
         {done ? (
           <span className="adhkar-done-badge">✓ مكتمل</span>
         ) : (
-          <button className="adhkar-tap-btn" onClick={onIncrement}>اضغط للتسبيح</button>
+          <button className="adhkar-tap-btn" onClick={onIncrement}>اضغط للعدّ</button>
         )}
         <button className="adhkar-reset-btn" onClick={onReset}>إعادة</button>
       </div>
